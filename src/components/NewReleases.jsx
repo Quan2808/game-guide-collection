@@ -127,7 +127,7 @@ export default function NewReleases() {
   };
 
   return (
-    <div className="bg-black text-white" data-uia="trending-now">
+    <div className="bg-gray-900  text-white" data-uia="trending-now">
       <section className="px-4 py-8 sm:px-6 lg:px-12 max-w-screen-2xl mx-auto">
         <div className="relative">
           {/* Header with Navigation */}
@@ -180,7 +180,7 @@ export default function NewReleases() {
               {/* Create pages */}
               {Array.from({ length: totalPages }, (_, pageIndex) => (
                 <div key={pageIndex} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
                     {trendingData
                       .slice(
                         pageIndex * ITEMS_PER_PAGE,
@@ -189,24 +189,105 @@ export default function NewReleases() {
                       .map((item, index) => (
                         <div
                           key={`${pageIndex}-${index}`}
-                          className="group transition-all duration-500 ease-out transform hover:z-10 relative"
+                          className="group relative cursor-pointer"
+                          style={{
+                            perspective: "1000px",
+                          }}
                         >
-                          <div className="relative overflow-hidden rounded-2xl bg-white transition-all duration-300">
-                            <div className="aspect-[3/4] overflow-hidden">
-                              <img
-                                src={item.image}
-                                alt={item.title}
-                                className="w-full h-full object-cover group-transition-transform duration-500"
-                              />
+                          <div className="relative transform-gpu transition-all duration-500 ease-out">
+                            {/* Main card container */}
+                            <div className="relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 group-hover:shadow-xl group-hover:shadow-black/10">
+                              {/* Image container with sophisticated overlay system */}
+                              <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
+                                <img
+                                  src={item.image}
+                                  alt={item.title}
+                                  className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:brightness-105"
+                                />
+
+                                {/* Gradient overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+
+                                {/* Subtle light reflection */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                              </div>
+
+                              {/* Content section with professional styling */}
+                              <div className="absolute bottom-0 left-0 right-0 p-4">
+                                <div className="transform translate-y-6 group-hover:translate-y-0 transition-all duration-400 ease-out">
+                                  <div className="space-y-2">
+                                    <h3 className="font-semibold text-lg text-white leading-tight opacity-0 group-hover:opacity-100 transition-all duration-300 delay-100">
+                                      {item.title}
+                                    </h3>
+
+                                    <p className="text-sm text-gray-200 leading-relaxed opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200">
+                                      {item.description ||
+                                        "Premium content available"}
+                                    </p>
+
+                                    {/* Professional action bar */}
+                                    <div className="flex items-center justify-between pt-2 opacity-0 group-hover:opacity-100 transition-all duration-400 delay-300">
+                                      <div className="flex items-center space-x-3">
+                                        <button className="flex items-center space-x-1 text-xs text-white/80 hover:text-white transition-colors duration-200">
+                                          <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth={1.5}
+                                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                            />
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth={1.5}
+                                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                            />
+                                          </svg>
+                                          <span>View</span>
+                                        </button>
+
+                                        <button className="flex items-center space-x-1 text-xs text-white/80 hover:text-white transition-colors duration-200">
+                                          <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth={1.5}
+                                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                            />
+                                          </svg>
+                                          <span>Save</span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Sophisticated border animation */}
+                              <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-white/20 transition-all duration-500"></div>
                             </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                              <h3 className="font-semibold text-lg">
-                                {item.title}
-                              </h3>
-                              <p className="text-sm text-gray-200">
-                                {item.title}
-                              </p>
+
+                            {/* Professional backdrop glow */}
+                            <div className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-r from-blue-500/0 via-indigo-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:via-indigo-500/5 group-hover:to-purple-500/5 blur-2xl transition-all duration-700 transform group-hover:-translate-y-1"></div>
+
+                            {/* Reflection effect at the bottom */}
+                            <div className="absolute -bottom-8 left-0 right-0 h-8 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm transform rotate-180"></div>
+                          </div>
+
+                          {/* Professional loading indicator */}
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                              <div className="w-1 h-1 bg-white/60 rounded-full animate-ping"></div>
                             </div>
                           </div>
                         </div>

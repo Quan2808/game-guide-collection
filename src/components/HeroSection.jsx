@@ -106,6 +106,8 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+      {/* Gradient overlay at bottom for better text readability */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
     </div>
   );
 }
