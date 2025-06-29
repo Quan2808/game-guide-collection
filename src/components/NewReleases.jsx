@@ -41,7 +41,7 @@ const trendingData = [
   {
     title: "Sweet Home",
     image:
-      "https://occ-0-325-395.1.nflxs.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABWImL8r63WclxQbHyy8b_I3I0ux46Mf1SIcSC-1A_5J_oLY2kq56UeGFbnqrK7m6-8PAtnSP-HqWJBbqsf7-qQF0xFE_qWXjQB-cPoGRYI9DRDIxt-WffcqHPp-u07RE_hdn3g.webp?r=066",
+      "https://occ-0-325-395.1.nflxso.net/dnm/api/v6/mAcAr9TxZIVbINe88xb3Teg5_OA/AAAABWImL8r63WclxQbHyy8b_I3I0ux46Mf1SIcSC-1A_5J_oLY2kq56UeGFbnqrK7m6-8PAtnSP-HqWJBbqsf7-qQF0xFE_qWXjQB-cPoGRYI9DRDIxt-WffcqHPp-u07RE_hdn3g.webp?r=066",
     rank: 7,
   },
   {
@@ -107,7 +107,7 @@ export default function NewReleases() {
     if (canScrollLeft && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPage((prev) => prev - 1);
-      setTimeout(() => setIsTransitioning(false), 300);
+      setTimeout(() => setIsTransitioning(false), 500);
     }
   };
 
@@ -116,19 +116,14 @@ export default function NewReleases() {
     if (canScrollRight && !isTransitioning) {
       setIsTransitioning(true);
       setCurrentPage((prev) => prev + 1);
-      setTimeout(() => setIsTransitioning(false), 300);
+      setTimeout(() => setIsTransitioning(false), 500);
     }
   };
 
-  // Get current items to display
-  const getCurrentItems = () => {
-    const startIndex = currentPage * ITEMS_PER_PAGE;
-    return trendingData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  };
-
-  // Get responsive grid classes
-  const getGridClasses = () => {
-    return "grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 sm:gap-6 lg:gap-8";
+  // Calculate transform value for smooth sliding
+  const getTransformValue = () => {
+    const translateX = -currentPage * 100;
+    return `translateX(${translateX}%)`;
   };
 
   return (
@@ -175,29 +170,51 @@ export default function NewReleases() {
             )}
           </div>
 
-          {/* Content Container */}
-          <div className={`GridClasses transition-all duration-300`}>
-            {getCurrentItems().map((item, index) => (
-              <div
-                key={`${currentPage}-${index}`}
-                className={`group transition-all duration-500 ease-out transform hover:scale-110 hover:z-10 relative`}
-              >
-                <div className="relative overflow-hidden rounded-2xl bg-white transition-all duration-300">
-                  <div className="aspect-[3/4] overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="font-semibold text-lg">{item.title}</h3>
-                    <p className="text-sm text-gray-200">{item.title}</p>
+          {/* Content Container*/}
+          <div className="overflow-hidden">
+            <div
+              ref={scrollContainerRef}
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: getTransformValue() }}
+            >
+              {/* Create pages */}
+              {Array.from({ length: totalPages }, (_, pageIndex) => (
+                <div key={pageIndex} className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                    {trendingData
+                      .slice(
+                        pageIndex * ITEMS_PER_PAGE,
+                        pageIndex * ITEMS_PER_PAGE + ITEMS_PER_PAGE
+                      )
+                      .map((item, index) => (
+                        <div
+                          key={`${pageIndex}-${index}`}
+                          className="group transition-all duration-500 ease-out transform hover:z-10 relative"
+                        >
+                          <div className="relative overflow-hidden rounded-2xl bg-white transition-all duration-300">
+                            <div className="aspect-[3/4] overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className="w-full h-full object-cover group-transition-transform duration-500"
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                              <h3 className="font-semibold text-lg">
+                                {item.title}
+                              </h3>
+                              <p className="text-sm text-gray-200">
+                                {item.title}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
